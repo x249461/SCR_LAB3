@@ -1,0 +1,49 @@
+Zad 1
+Komenda 'ps' wyświetla opis bieżących procesów. Domyślnie ps wyświetla procesy mające ten sam efektywny identyfikator
+użytkownika (EUID), co bieżący użytkownik, oraz podłączone do tego samego
+terminala, do którego podłączona jest osoba uruchamiająca ps. Wyświetlany jest
+identyfikator procesu (PID), terminal (tty), do którego proces jest podłączony
+(TTY), łączny czas procesora w formacie [dd-]hh:mm:ss (TIME) oraz nazwa pliku
+wykonywalnego (CMD). 
+Opcja '-u' -    Wybór przez podanie efektywnego identyfikatora użytkownika
+		Wybiera procesy, których efektywna nazwa użytkownika lub ID
+                jest w userlist
+Opcja '-t' -  	Wybór przez tty.
+                Wybiera procesy podłączone do terminali podanych w liście
+                ttylist.
+Opcja '-p' - 	Wybór przez PID.
+                Wybiera procesy, których identyfikatory pojawiają się w
+                pidlist. Identyczne z p i --pid.
+
+Zad 2
+Proces C został zaadoptowany przez init. Ponadto proces rodzic zakończył swoje działanie.
+
+Zad 3
+Pokrewieństwem pomiędzy procesami jest to, że wszystkie są potomkiem terminala. 
+
+Zad 4
+System rozdziela dane z pliku procesom o współdzielonym dostępie do potoku w sposób najprawdopodobnie losowy.
+Aby udowodnić tę tezę, należałoby przeprowadzić ten test dla dużo większej ilości próbek, daletego jedynie 
+zakładam, że tak jest.
+Kiedy zamkniemy proces piszacy, to proces czytajacy dostanie 0, a kiedy zamkniemy proces czytający, 
+to piszący dostanie SIGPIPE.
+Gdy uruchomimy proces czytający bez procesu zapisującego, proces będzie czekał na dane z potoku, a 
+w odwrotnej sytuacji proces będzie zapisywał do potoku. Kiedy uruchomimy dwa procesy na raz, to
+dane po zapisaniu od razu zostaną odczytane.
+
+
+Zad 5
+Tak jak było to zakładane, sygnału SIGKILL nie da się powstrzymać, nawet pomimo ustawienia
+polecenia 'trap' na przechwytywanie 15 podstawowych sygnałów. Sygnał SIGKILL powoduje, że
+skrypt zostaje natychmiatowo zabity.
+Skrypt:
+#!/bin/sh
+
+trap "echo trapped" {1..15}
+
+while true 
+do
+    echo -n "$$ "
+    date
+    sleep 1
+done
